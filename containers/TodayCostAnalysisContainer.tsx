@@ -1,7 +1,7 @@
 import React from 'react';
-import TodayCostAnalysis from '../components/TodayCostAnalysis';
+import TodayCostAnalysis, {TodayCostItem, } from '../components/TodayCostAnalysis';
 
-const mockTodayCostItems = [{
+const mockTodayCostItems : Array<TodayCostItem> = [{
   type: 'food',
   cost: 35,
   detail: 'Cup noodle',
@@ -15,6 +15,13 @@ const mockTodayCostItems = [{
   detail: 'Bean sprout',
 }]
 
-export default () => {
- return (<TodayCostAnalysis todayCostItems={mockTodayCostItems}></TodayCostAnalysis>)
+export interface Props{
+  navigateTo: (targetName: string)  => void;
+}
+
+export default ({navigateTo} : Props) => {
+ return (<TodayCostAnalysis 
+  navigateTo={navigateTo}
+  todayCostItems={mockTodayCostItems}
+  ></TodayCostAnalysis>)
 }

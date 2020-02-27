@@ -67,3 +67,24 @@
 我会先解决第四个任务，但是这个是要依赖数据存储的，也就是依赖第五点，所以我会花一点时间去search第五点.
 
 ## Finish the second component of creating new item
+
+Overall code structure:
+
+```js
+- Button(Return)
+- View(Form)
+  - View(Type selector)
+  - View(Cost input)
+  - View(detail input)
+- Button(Confirm)
+```
+
+Now I can start coding the component named NewCostItem.
+
+Now I need to introduce navigation or mocking it, how should I choose? I will try to mock navigation to measure the effort to be paid.
+
+And then, what is the input? There is no need of props, all things need to be done is just read the user inputs and save them to the storage.
+
+
+
+

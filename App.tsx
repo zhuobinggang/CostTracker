@@ -1,13 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import TodayCostAnalysis from './containers/TodayCostAnalysisContainer';
+import NewCostItem from './containers/NewCostItemContainer';
 
 export default function App() {
+  const [page, setPage] = useState('TodayCostAnalysis');
+  const navigateTo : (targetPage: string) => void = (targetPage) => {
+    setPage(targetPage)
+  };
   return (
-    // <View style={styles.container}>
-    //   <Text>Open up App.tsx to start working on your app!</Text>
-    // </View>
-    <TodayCostAnalysis></TodayCostAnalysis>
+    <View>
+      {page=='TodayCostAnalysis' && (<TodayCostAnalysis navigateTo={navigateTo}></TodayCostAnalysis>)}
+      {page=='NewCostItem' && (<NewCostItem></NewCostItem>)}
+    </View>
   );
 }
 

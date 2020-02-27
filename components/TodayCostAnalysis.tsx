@@ -1,20 +1,25 @@
 import React from 'react';
 import { Button, Text, View } from 'react-native';
 
-interface TodayCostItems{
+export interface TodayCostItem{
   type: string;
   cost: number;
   detail: string;
 }
 
-function renderItems(todayCostItems: Array<TodayCostItems>){
+export interface Props{
+  todayCostItems: Array<TodayCostItem>;
+  navigateTo: (targetName: string)  => void;
+}
+
+function renderItems(todayCostItems: Array<TodayCostItem>){
   return todayCostItems.map((item, index) => {
     const {type, cost, detail} = item;
     return <Text key={index}>Cost: {cost}円, type: {type}({detail})</Text>
   })
 }
 
-export default ({todayCostItems}) => {
+export default ({todayCostItems, navigateTo} : Props) : JSX.Element => {
   return ( <View>
     <Button title="周支出折线图" onPress={() => {
       console.log('dd')
@@ -28,6 +33,7 @@ export default ({todayCostItems}) => {
     </View>
     <Button title="新增支出" onPress={() => {
       console.log('新增支出')
+      navigateTo('NewCostItem');
     }}></Button>
   </View>)
 }
