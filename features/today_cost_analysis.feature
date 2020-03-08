@@ -1,8 +1,9 @@
-Feature: To show analysis of costs today
-  I will be shown analysis when I enter the homepage
-
-  Scenario: I will be shown analysis 
-    Given I have some cost items today
-    When I enter the homepage
+Feature: Cost Analysis Today
+  Scenario Outline: Add Record Then Show The Analysis
+    Given I have no record today
+    When I add records with cost of "<costList>", type of "<typeList>" today
     Then I will be shown analysis
-
+    And The percentage list of the records will be '<percentMap>'
+  Examples:
+    | typeList | costList | percentMap |
+    | Life, Food | 200, 300 | {"Life": 40, "Food": 60} |
