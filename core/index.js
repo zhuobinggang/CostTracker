@@ -15,4 +15,13 @@ const getAnalysis = (costItems) => {
   return result
 }
 
-module.exports = {getAnalysis}
+const totalCost = (costItems) => {
+  return costItems.reduce((sum, cur) => {
+    return sum + parseFloat(cur.cost)
+  }, 0)
+}
+
+module.exports = {
+  getAnalysis,
+  totalCost,
+}

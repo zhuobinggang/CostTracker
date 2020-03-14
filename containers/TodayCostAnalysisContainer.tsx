@@ -1,5 +1,6 @@
 import React from 'react';
 import TodayCostAnalysis, {TodayCostItem, } from '../components/TodayCostAnalysis';
+import {getAnalysis, totalCost} from '../core/index.js';
 
 const mockTodayCostItems : Array<TodayCostItem> = [{
   type: 'food',
@@ -23,5 +24,7 @@ export default ({navigateTo} : Props) => {
  return (<TodayCostAnalysis 
   navigateTo={navigateTo}
   todayCostItems={mockTodayCostItems}
+  percentMap={getAnalysis(mockTodayCostItems)}
+  totalCost={totalCost(mockTodayCostItems)}
   ></TodayCostAnalysis>)
 }

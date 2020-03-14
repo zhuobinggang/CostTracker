@@ -1,6 +1,6 @@
 const assert = require("assert")
 const {Given, When, Then} = require("cucumber")
-const {getAnalysis} = require('../../core')
+const {getAnalysis, totalCost} = require('../../core')
 
 function costItem(type, cost, detail=''){
   return {
@@ -34,3 +34,7 @@ Then('The percentage list of the records will be {string}', function(percentMap)
 Then('I will be shown analysis', function(){
   console.log('Yse I got here');
 })
+
+Then('The total cost will be {string}', function (total) {
+  return assert.equal(total, totalCost(this.todayCostItems));
+});
