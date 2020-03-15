@@ -6,20 +6,6 @@ import { connect } from 'react-redux'
 import {RootState} from '../store'
 import {readAllCostToday} from '../core/db'
 
-const mockTodayCostItems : Array<TodayCostItem> = [{
-  type: 'food',
-  cost: 35,
-  detail: 'Cup noodle',
-}, {
-  type: 'clothe',
-  cost: 135,
-  detail: 'Jeans',
-}, {
-  type: 'food',
-  cost: 85,
-  detail: 'Bean sprout',
-}]
-
 export interface Props{
   todayCostItems?: TodayCostItem[];
   navigation?: any;
@@ -45,7 +31,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(({todayCostItems, na
       todayCostItemsGot(list)
     })
   },[])
- todayCostItems = todayCostItems || mockTodayCostItems
+ todayCostItems = todayCostItems || []
  return (<TodayCostAnalysis 
   navigateTo={(routeName) => {
     navigation.navigate(routeName);

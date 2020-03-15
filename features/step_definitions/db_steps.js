@@ -1,6 +1,6 @@
 const assert = require("assert")
 const {Given, When, Then} = require("cucumber")
-const {getAnalysis, totalCost, getWeeklyAnalysis} = require('../../core')
+const {getAnalysis, totalCost, getWeeklyAnalysis, getMonthlyAnalysis} = require('../../core')
 const db = require('../../core/db.js')
 
 Given('OK', function () {
@@ -11,7 +11,9 @@ When('I create a cost of type: {string}, cost: {string}, detail: {string}, time:
   function (type, cost, detail, time) {
     const newCost = {type, cost, detail, time};
     this.cost = newCost;
-    return db.save(newCost);
+    return db.save(newCost).then(() => {
+      db.logoutCacheDb()
+    });
   }
 );
 
@@ -30,7 +32,7 @@ When('I read all cost today', function () {
 
 When('I read all cost in date {string}', function (date) {
   const me = this;
-  return db.readAllCostToday(date).then(list => {
+  return db.readAllCostInDate(date).then(list => {
     me.costList = list;
   });
 });
@@ -73,4 +75,14 @@ Then('The weekly analysis is like {string}', function (analysis) {
 
 Then('Clear the db', function () {
   db.emptyAll()
+});
+
+When('I want to read monthly analysis', function () {
+  // Write code here that turns the phrase above into concrete actions
+  this.analysis = getMonthlyAnalysis(this.date);
+});
+
+Then('Just log it out', function () {
+  console.log('Just log it out')
+  console.log(this.analysis);
 });

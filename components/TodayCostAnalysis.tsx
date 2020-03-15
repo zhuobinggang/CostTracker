@@ -30,6 +30,9 @@ export default ({todayCostItems, navigateTo, percentMap, totalCost} : Props) : J
     <Button title="周支出折线图" onPress={() => {
       navigateTo('WeekCostAnalysis')
     }}></Button>
+    <Button title="月支出折线图" onPress={() => {
+      navigateTo('MonthlyCostAnalysis')
+    }}></Button>
     <View>
       <View>
         <View><Text>左边的饼图</Text></View>

@@ -21,6 +21,9 @@ function getCacheStorage(){
       storage = {};
       return Promise.resolve()
     },
+    logout: function(){
+      console.log(storage)
+    }
   }
 }
 
@@ -43,7 +46,8 @@ const save = function(costItem){
   if(costItem == null){
     return
   }
-  const {type = 'Unknown', cost = 0, detail = 'No detail', time = dateFormatted(new Date())} = costItem;
+  const time = costItem.time == null ? dateFormatted(new Date()) : dateFormatted(new Date(costItem.time));
+  const {type = 'Unknown', cost = 0, detail = 'No detail'} = costItem;
   return storage.getItem(time).then(item => {
     const costList = (item == null || item == '') ? [] : JSON.parse(item);
     costList.push({type, cost, detail, time});
@@ -53,10 +57,22 @@ const save = function(costItem){
 }
 
 const isTwoCostEqual = (c1, c2) => {
-  return c1.type == c2.type && c1.cost == c2.cost && c1.detail == c2.detail && c1.time == c2.time;
+  const t1 = new Date(c1.time)
+  const t2 = new Date(c2.time)
+  return c1.type == c2.type && c1.cost == c2.cost && c1.detail == c2.detail && (
+    t1.getFullYear() == t2.getFullYear() && t1.getMonth() == t2.getMonth() && t1.getDate() == t2.getDate()
+  );
+
 }
 
-const readAllCostInDate = function(time = dateFormatted(new Date())){
+const readAllCostInDate = function(time){
+  if(typeof time == 'string'){
+    time = dateFormatted(new Date(time))
+  }else if(time == null){
+    time = dateFormatted(new Date())
+  }else{
+    time = dateFormatted(time)
+  }
   return storage.getItem(time).then(item => {
     if(item == null){
       return []
@@ -89,9 +105,15 @@ const saveList = function(list){
 }
 
 
+const logoutCacheDb = () => {
+  if(storage.logout){
+    storage.logout()
+  }
+}
+
 module.exports = {
   save,  isTwoCostEqual, dateFormatted, readAllCostInDate,
   emptyAll,
   readAllCostToday: readAllCostInDate,
-  saveList,
+  saveList,logoutCacheDb,
 };

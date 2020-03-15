@@ -21,11 +21,6 @@ const getAnalysis = (costItems) => {
   return result
 }
 
-const totalCost = (costItems) => {
-  return costItems.reduce((sum, cur) => {
-    return sum + parseFloat(cur.cost)
-  }, 0)
-}
 
 const getWeekdates = (dateAsText) => {
   date = new Date(dateAsText);
@@ -39,15 +34,75 @@ const getWeekdates = (dateAsText) => {
   return result
 }
 
+function getDaysInMonth(month, year) {
+  var date = new Date(year, month, 1);
+  var days = [];
+  while (date.getMonth() === month) {
+    days.push(new Date(date));
+    date.setDate(date.getDate() + 1);
+  }
+  return days;
+}
+
+
+const totalCostEveryDayInMonth = (date) => {
+  const result = {};
+  const all = getDaysInMonth(date.getMonth(), date.getFullYear()).map(date => {
+    db.readAllCostInDate(date).then((itemList) => {
+      return totalCost(itemList)
+    }).then(total => {
+      result[db.dateFormatted(date)] = total
+    })
+  })
+  return Promise.all(all).then(() => {
+    return result;
+  });
+}
+
+const aggregateCost = (step = 5, dateCostMap) => {
+  let acc = 0;
+  let startDate = '';
+  const result = {};
+  Object.keys(dateCostMap).forEach(date => {
+    if(acc == 0){
+      startDate = date
+      result[startDate] = 0
+    }
+    acc++;
+    result[startDate] += Number(dateCostMap[date])
+    if(acc >= step){
+      acc = 0
+    }
+  })
+  return result;
+}
+
+
+const getMonthlyAnalysis = (date, aggregateFactor = 5) => {
+  if(date == null){
+    date = new Date()
+  }else if(typeof date == 'string'){
+    date = new Date(date)
+  }
+  return totalCostEveryDayInMonth(date).then((dateCostMap) => {
+    return aggregateCost(aggregateFactor, dateCostMap)
+    //return dateCostMap
+  })
+} 
+
+const totalCost = (costItems) => {
+  return costItems.reduce((acc, {cost}) => {
+    return acc + Number(cost)
+  },0)
+}
+
 const getWeeklyAnalysis = (date) => {
   date = typeof date == 'object' ? db.dateFormatted(date) : db.dateFormatted(new Date(date));
   const weekdates = getWeekdates(date)
   const result = {};
   const all = weekdates.map(weekdate => {
     return db.readAllCostInDate(weekdate).then(costItems => {
-      result[weekdate] = costItems.reduce((acc, {cost}) => {
-        return acc + Number(cost)
-      },0)
+      result[weekdate] = totalCost(costItems);
       return true
     })
   })
@@ -60,4 +115,5 @@ module.exports = {
   getAnalysis,
   totalCost,
   getWeeklyAnalysis,
+  getMonthlyAnalysis,
 }

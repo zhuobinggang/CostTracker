@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import TodayCostAnalysis from './containers/TodayCostAnalysisContainer';
 import NewCostItem from './containers/NewCostItemContainer';
 import WeekCostAnalysis from './containers/WeekCostAnalysis'
+import MonthlyCostAnalysis from './containers/MonthlyCostAnalysis'
 import { Provider } from 'react-redux'
 import {store} from './store'
 import { NavigationContainer } from '@react-navigation/native';
@@ -14,6 +15,7 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="TodayCostAnalysis">
+          <Stack.Screen name="MonthlyCostAnalysis" component={MonthlyCostAnalysis} />
           <Stack.Screen name="TodayCostAnalysis" component={TodayCostAnalysis} />
           <Stack.Screen name="NewCostItem" component={NewCostItem} />
           <Stack.Screen name="WeekCostAnalysis" component={WeekCostAnalysis} />
