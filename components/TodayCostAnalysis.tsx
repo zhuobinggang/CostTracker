@@ -1,12 +1,7 @@
 import React from 'react';
 import { Button, Text, View } from 'react-native';
 import { totalCost } from '../core';
-
-export interface TodayCostItem{
-  type: string;
-  cost: number;
-  detail: string;
-}
+import {TodayCostItem} from '../types/index'
 
 export type PercentMap = {[name: string]: string};
 

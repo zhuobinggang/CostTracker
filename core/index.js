@@ -10,7 +10,11 @@ const getAnalysis = (costItems) => {
   });
 
   Object.keys(result).forEach((key) => {
-    result[key] = Number((result[key] / total) * 100).toFixed()
+    if(total == 0){
+      result[key] = 100;
+    }else{
+      result[key] = Number((result[key] / total) * 100).toFixed();
+    }
   })
   return result
 }

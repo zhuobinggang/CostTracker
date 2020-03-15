@@ -7,6 +7,7 @@ Feature: Cost Analysis Today
   Examples:
     | typeList | costList | percentMap |
     | Life, Food | 200, 300 | {"Life": 40, "Food": 60} |
+    | Life, Food | 0, 0 | {"Life": 100, "Food": 100} |
 
   Scenario Outline: I want to see the total Cost
     Given I have no record today
