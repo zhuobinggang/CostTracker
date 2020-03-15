@@ -40,6 +40,7 @@ const getWeekdates = (dateAsText) => {
 }
 
 const getWeeklyAnalysis = (date) => {
+  date = typeof date == 'object' ? db.dateFormatted(date) : db.dateFormatted(new Date(date));
   const weekdates = getWeekdates(date)
   const result = {};
   const all = weekdates.map(weekdate => {

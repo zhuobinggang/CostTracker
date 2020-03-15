@@ -28,7 +28,7 @@ function viewsFromPercentMap(percentMap: PercentMap){
 export default ({todayCostItems, navigateTo, percentMap, totalCost} : Props) : JSX.Element => {
   return ( <View>
     <Button title="周支出折线图" onPress={() => {
-      console.log('dd')
+      navigateTo('WeekCostAnalysis')
     }}></Button>
     <View>
       <View>
