@@ -16,3 +16,5 @@ Feature: Create and read cost
   Examples:
     | type | cost | detail | time | 
     | Food | 300 | cup noodle | 1997-10-01 |
+
+  Scenario Outline: I want to see yesterday analysis

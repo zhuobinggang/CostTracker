@@ -3,13 +3,12 @@ function reactStorageExist(){
     const {AsyncStorage} = require('react-native')
     return true;
   } catch(e){
-    console.log('fuck')
     return false;
   };
 }
 
 function getCacheStorage(){
-  const storage =  {}
+  let storage =  {}
   return {
     getItem: function(time){
       return Promise.resolve(storage[time])
@@ -17,13 +16,20 @@ function getCacheStorage(){
     setItem: function(key, val){
       storage[key] = val;
       return Promise.resolve()
-    }
+    },
+    emptyAll: function(){
+      storage = {};
+      return Promise.resolve()
+    },
   }
 }
 
 function getReactStorage(){
-  console.warn('I use the AsyncStorage from react-native')
+  console.error('I am using the AsyncStorage from react-native')
   const {AsyncStorage} = require('react-native')
+  AsyncStorage.emptyAll = function(){
+    this.clear()
+  }
   return AsyncStorage;
 }
 
@@ -34,7 +40,10 @@ function dateFormatted(time){
 const storage = reactStorageExist()? getReactStorage() : getCacheStorage();
 
 const save = function(costItem){
-  const {type, cost, detail, time = dateFormatted(new Date())} = costItem;
+  if(costItem == null){
+    return
+  }
+  const {type = 'Unknown', cost = 0, detail = 'No detail', time = dateFormatted(new Date())} = costItem;
   return storage.getItem(time).then(item => {
     const costList = (item == null || item == '') ? [] : JSON.parse(item);
     costList.push({type, cost, detail, time});
@@ -47,14 +56,42 @@ const isTwoCostEqual = (c1, c2) => {
   return c1.type == c2.type && c1.cost == c2.cost && c1.detail == c2.detail && c1.time == c2.time;
 }
 
-const readAddCostInDate = function(time = dateFormatted(new Date())){
+const readAllCostInDate = function(time = dateFormatted(new Date())){
   return storage.getItem(time).then(item => {
-    return JSON.parse(item);
+    if(item == null){
+      return []
+    }else{
+      return JSON.parse(item);
+    }
   })
+}
+
+const emptyAll = function(){
+  return storage.emptyAll()
+}
+
+const saveList = function(list){
+  const map = {}
+  list.forEach(item => {
+    if(map[item.time] == null){
+      map[item.time] = [item]
+    }else{
+      map[item.time].push(item)
+    }
+  })
+  const all = Object.keys(map).map(key => {
+    return storage.getItem(key).then(val => {
+      const list = (val == null || val == '') ? [] : JSON.parse(val)
+      return storage.setItem(key, JSON.stringify(list.concat(map[key])))
+    })
+  })
+  return Promise.resolve(all)
 }
 
 
 module.exports = {
-  save,  isTwoCostEqual, dateFormatted, readAddCostInDate,
-  readAllCostToday: readAddCostInDate,
+  save,  isTwoCostEqual, dateFormatted, readAllCostInDate,
+  emptyAll,
+  readAllCostToday: readAllCostInDate,
+  saveList,
 };

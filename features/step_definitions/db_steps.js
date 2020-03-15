@@ -1,6 +1,6 @@
 const assert = require("assert")
 const {Given, When, Then} = require("cucumber")
-const {getAnalysis, totalCost} = require('../../core')
+const {getAnalysis, totalCost, getWeeklyAnalysis} = require('../../core')
 const db = require('../../core/db.js')
 
 Given('OK', function () {
@@ -30,7 +30,7 @@ When('I read all cost today', function () {
 
 When('I read all cost in date {string}', function (date) {
   const me = this;
-  return db.readAddCostInDate(date).then(list => {
+  return db.readAllCostToday(date).then(list => {
     me.costList = list;
   });
 });
@@ -43,3 +43,34 @@ Then('The cost is contained in the list', function () {
   assert.notEqual(null, finded);
 });
 
+Given('Today is {string}, and there is already some {string} these days.', function (date, records) {
+  this.date = date;
+  return db.emptyAll().then(() => {
+    const all = records.split(';').map(typeCostDate => {
+      const [type, cost, date] = typeCostDate.split(',');
+      return {type, cost, time: date}
+    })
+    return db.saveList(all)
+  });
+});
+
+
+When('I want to read weekly analysis', function () {
+  const me = this;
+  return getWeeklyAnalysis(this.date).then((analysis) => {
+    me.analysis = analysis;
+  });
+});
+
+Then('The weekly analysis is like {string}', function (analysis) {
+  const result = this.analysis
+  const incorrectList = analysis.split(',').filter(analyse => {
+    const [date,cost] = analyse.split(':')
+    return result[date] != cost
+  });
+  assert.equal(incorrectList.length, 0);
+});
+
+Then('Clear the db', function () {
+  db.emptyAll()
+});
