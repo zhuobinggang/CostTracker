@@ -1,9 +1,10 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import TodayCostAnalysis from '../components/TodayCostAnalysis';
 import {getAnalysis, totalCost} from '../core/index.js';
-import {TodayCostItem} from '../types'
+import {TodayCostItem, TYPES} from '../types'
 import { connect } from 'react-redux'
 import {RootState} from '../store'
+import {readAllCostToday} from '../core/db'
 
 const mockTodayCostItems : Array<TodayCostItem> = [{
   type: 'food',
@@ -22,17 +23,28 @@ const mockTodayCostItems : Array<TodayCostItem> = [{
 export interface Props{
   todayCostItems?: TodayCostItem[];
   navigation?: any;
+  todayCostItemsGot: (items: TodayCostItem[]) => void;
 }
 
 const mapStateToProps = (state: RootState)=>{
   return {todayCostItems: state.todayCostItems}
 }
 
-const mapDispatchToProps = () => {
-  return {}
+const mapDispatchToProps = (dispatch: any) => {
+  return {todayCostItemsGot: (items: TodayCostItem[]) =>{
+    dispatch({
+      type: TYPES.TODAY_COST_ITEMS_GOT,
+      payload: items,
+    })
+  }}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(({todayCostItems, navigation} : Props) => {
+export default connect(mapStateToProps, mapDispatchToProps)(({todayCostItems, navigation, todayCostItemsGot} : Props) => {
+  useEffect(() => {
+    readAllCostToday().then(list => {
+      todayCostItemsGot(list)
+    })
+  },[])
  todayCostItems = todayCostItems || mockTodayCostItems
  return (<TodayCostAnalysis 
   navigateTo={(routeName) => {
