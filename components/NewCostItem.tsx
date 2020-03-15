@@ -2,6 +2,7 @@ import React,{useState} from 'react';
 import {View, Text, Button, Picker, TextInput} from 'react-native';
 import {dateNow} from '../db/async';
 import { TodayCostItem } from '../types';
+import Alert from './Alert'
 
 interface Props{
   saveToStorageAndFreeze: (cost: TodayCostItem) => void;
@@ -55,9 +56,14 @@ export default function NewCostItem({saveToStorageAndFreeze, freeze, navigateTo}
       />
     </View>
     <Button title="确认" onPress={() => {
-      saveToStorageAndFreeze({
-        detail, cost: Number(cost), type, 
-      });
+      if(isNaN(Number(cost))){
+        Alert('请输入正确的支出')
+        setCost('')
+      }else{
+        saveToStorageAndFreeze({
+          detail, cost: Number(cost), type, 
+        });
+      }
     }}></Button>
   </View>
 }
