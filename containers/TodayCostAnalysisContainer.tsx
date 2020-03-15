@@ -1,6 +1,7 @@
 import React from 'react';
-import TodayCostAnalysis, {TodayCostItem, } from '../components/TodayCostAnalysis';
+import TodayCostAnalysis from '../components/TodayCostAnalysis';
 import {getAnalysis, totalCost} from '../core/index.js';
+import {TodayCostItem} from '../types'
 
 const mockTodayCostItems : Array<TodayCostItem> = [{
   type: 'food',

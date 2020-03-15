@@ -11,7 +11,7 @@ export default function App() {
   return (
     <View>
       {page=='TodayCostAnalysis' && (<TodayCostAnalysis navigateTo={navigateTo}></TodayCostAnalysis>)}
-      {page=='NewCostItem' && (<NewCostItem></NewCostItem>)}
+      {page=='NewCostItem' && (<NewCostItem navigateTo={navigateTo}></NewCostItem>)}
     </View>
   );
 }

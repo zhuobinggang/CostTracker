@@ -22,7 +22,9 @@ function getCacheStorage(){
 }
 
 function getReactStorage(){
-  return null
+  console.warn('I use the AsyncStorage from react-native')
+  const {AsyncStorage} = require('react-native')
+  return AsyncStorage;
 }
 
 function dateFormatted(time){
