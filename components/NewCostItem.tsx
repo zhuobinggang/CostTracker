@@ -1,9 +1,10 @@
 import React,{useState} from 'react';
 import {View, Text, Button, Picker, TextInput} from 'react-native';
 import {dateNow} from '../db/async';
+import { TodayCostItem } from '../types';
 
 interface Props{
-  saveToStorageAndFreeze: (date: string, type: string, cost: number, detail: string) => void;
+  saveToStorageAndFreeze: (cost: TodayCostItem) => void;
   freeze: boolean;
   navigateTo: (componentName: string) => void;
 }
@@ -24,7 +25,9 @@ export default function NewCostItem({saveToStorageAndFreeze, freeze, navigateTo}
         <Picker
           selectedValue={type}
           style={{height: 50, width: 100}}
-          onValueChange={setType}>
+          onValueChange={(newType) => {
+            setType(newType)
+          }}>
           <Picker.Item label="食物" value="Food" />
           <Picker.Item label="衣物" value="Clothe" />
           <Picker.Item label="娱乐" value="Amusement" />
@@ -52,7 +55,9 @@ export default function NewCostItem({saveToStorageAndFreeze, freeze, navigateTo}
       />
     </View>
     <Button title="确认" onPress={() => {
-      saveToStorageAndFreeze(dateNow(), type, cost, detail);
+      saveToStorageAndFreeze({
+        detail, cost: Number(cost), type, 
+      });
     }}></Button>
   </View>
 }

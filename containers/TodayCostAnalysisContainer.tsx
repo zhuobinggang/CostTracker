@@ -2,6 +2,8 @@ import React from 'react';
 import TodayCostAnalysis from '../components/TodayCostAnalysis';
 import {getAnalysis, totalCost} from '../core/index.js';
 import {TodayCostItem} from '../types'
+import { connect } from 'react-redux'
+import {RootState} from '../store'
 
 const mockTodayCostItems : Array<TodayCostItem> = [{
   type: 'food',
@@ -18,14 +20,26 @@ const mockTodayCostItems : Array<TodayCostItem> = [{
 }]
 
 export interface Props{
-  navigateTo: (targetName: string)  => void;
+  todayCostItems?: TodayCostItem[];
+  navigation?: any;
 }
 
-export default ({navigateTo} : Props) => {
- return (<TodayCostAnalysis 
-  navigateTo={navigateTo}
-  todayCostItems={mockTodayCostItems}
-  percentMap={getAnalysis(mockTodayCostItems)}
-  totalCost={totalCost(mockTodayCostItems)}
-  ></TodayCostAnalysis>)
+const mapStateToProps = (state: RootState)=>{
+  return {todayCostItems: state.todayCostItems}
 }
+
+const mapDispatchToProps = () => {
+  return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(({todayCostItems, navigation} : Props) => {
+ todayCostItems = todayCostItems || mockTodayCostItems
+ return (<TodayCostAnalysis 
+  navigateTo={(routeName) => {
+    navigation.navigate(routeName);
+  }}
+  todayCostItems={todayCostItems}
+  percentMap={getAnalysis(todayCostItems)}
+  totalCost={totalCost(todayCostItems)}
+  ></TodayCostAnalysis>)
+})
