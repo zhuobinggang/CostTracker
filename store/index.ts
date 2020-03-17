@@ -17,7 +17,7 @@ const todayCostItems = (partOfState: TodayCostItem[], action:{type: string, payl
   if(action.type == TYPES.TODAY_COST_ITEMS_GOT){
     return action.payload
   }else{
-    partOfState
+    return partOfState
   }
 }
 
