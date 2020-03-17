@@ -15,6 +15,6 @@ It will take a while to release the first version.
 
 ### 2020/03
 - [X] 1. I want to see last day and next day analysis.
-- [ ] 2. I want to see last week and next week analysis.
+- [X] 2. I want to see last week and next week analysis.
 - [X] 3. I want to see  monthly analysis.
 - [ ] 4. I want to use the App in English.

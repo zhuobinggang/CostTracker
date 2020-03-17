@@ -11,8 +11,10 @@ const mapStateToProps = (state: RootState) => {
 }
 
 const mapDispatchToProps = (dispatch: any) => {
-  return {getWeeklyAnalysis: () => {
-    return getWeeklyAnalysis(new Date()).then(analysis => {
+  return {getWeeklyAnalysis: (dateOffset: number) => {
+    const date = new Date();
+    date.setDate(date.getDate() + dateOffset);
+    return getWeeklyAnalysis(date).then(analysis => {
       console.log('+++++')
       console.log(analysis)
       dispatch({

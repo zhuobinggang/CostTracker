@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Button, Text, View } from 'react-native';
 
 function viewsFromWeeklyAnalysis(weeklyAnalysis : any){
@@ -10,16 +10,29 @@ function viewsFromWeeklyAnalysis(weeklyAnalysis : any){
 }
 
 interface Props {
-  weeklyAnalysis?: any,
+  weeklyAnalysis: any,
   getWeeklyAnalysis?: any
 }
 
 export default (props: Props) => {
+  const [dateOffset, setDateOffset] = useState(0);
   useEffect(() => {
-    props.getWeeklyAnalysis()
+    props.getWeeklyAnalysis(dateOffset)
   },[])
-  const {weeklyAnalysis = []} = props
+  const {weeklyAnalysis} = props
   return <View>
-    {viewsFromWeeklyAnalysis(weeklyAnalysis)}
+    <View>
+      {viewsFromWeeklyAnalysis(weeklyAnalysis)}
+    </View>
+    <View>
+      <Button title="last week" onPress={() => {
+        setDateOffset(dateOffset - 7)
+        props.getWeeklyAnalysis(dateOffset - 7)
+      }}>last week</Button>
+      <Button title="next week" onPress={() => {
+        setDateOffset(dateOffset + 7)
+        props.getWeeklyAnalysis(dateOffset + 7)
+      }}>last week</Button>
+    </View>
   </View>
 }
