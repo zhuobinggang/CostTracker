@@ -7,6 +7,9 @@ const getAnalysis = (costItems) => {
     if(result[type] == null){
       result[type] = 0
     }
+    if(cost == null || isNaN(cost)){
+      cost = 0
+    }
     result[type] += parseFloat(cost)
     total += parseFloat(cost)
   });

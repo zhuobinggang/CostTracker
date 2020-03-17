@@ -26,8 +26,9 @@ export default (props: Props) => {
     </View>
     <View>
       <Button title="last week" onPress={() => {
-        setDateOffset(dateOffset - 7)
-        props.getWeeklyAnalysis(dateOffset - 7)
+        const newOffset = dateOffset - 7
+        setDateOffset(newOffset)
+        props.getWeeklyAnalysis(newOffset)
       }}>last week</Button>
       <Button title="next week" onPress={() => {
         setDateOffset(dateOffset + 7)
