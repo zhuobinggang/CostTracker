@@ -10,6 +10,7 @@ export interface Props{
   navigateTo: (targetName: string)  => void;
   percentMap: PercentMap;
   totalCost: number;
+  changeDateToday: (offset: number) => void;
 }
 
 function renderItems(todayCostItems: Array<TodayCostItem>){
@@ -25,7 +26,7 @@ function viewsFromPercentMap(percentMap: PercentMap){
   })
 }
 
-export default ({todayCostItems, navigateTo, percentMap, totalCost} : Props) : JSX.Element => {
+export default ({todayCostItems, navigateTo, percentMap, totalCost, changeDateToday} : Props) : JSX.Element => {
   return ( <View>
     <Button title="周支出折线图" onPress={() => {
       navigateTo('WeekCostAnalysis')
@@ -47,6 +48,10 @@ export default ({todayCostItems, navigateTo, percentMap, totalCost} : Props) : J
     <View style={{height: 16}}></View>
     <View>
       {renderItems(todayCostItems)}
+    </View>
+    <View>
+      <Button title="上一天" onPress={() => {changeDateToday(-1)}}></Button>
+      <Button title="下一天" onPress={() => {changeDateToday(1)}}></Button>
     </View>
     <View>
       <Button title="新增支出" onPress={() => {

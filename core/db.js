@@ -74,6 +74,8 @@ const readAllCostInDate = function(time){
     time = dateFormatted(time)
   }
   return storage.getItem(time).then(item => {
+    console.log("ReadAllCostInDate: ")
+    console.log(time, item)
     if(item == null){
       return []
     }else{
