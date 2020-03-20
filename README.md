@@ -18,3 +18,10 @@ It will take a while to release the first version.
 - [X] 2. I want to see last week and next week analysis.
 - [X] 3. I want to see  monthly analysis.
 - [ ] 4. I want to use the App in English.
+- [ ] 5. I want to read data from csv file.
+- [ ] 6. I want to be shown the daily report in pie chart.
+
+
+### Trouble Shooting
+- [ ] 1. I can not use React Native SVG in WEB ENV, 
+- [ ] 2. I can not start the app after using the fucking navigation.
